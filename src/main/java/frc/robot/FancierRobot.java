@@ -9,12 +9,12 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class FancierRobot extends TimedRobot {
-  int i_left_leader = 1, i_left_follower = 2, i_right_leader = 15, i_right_follower = 16;
+  int i_left_leader = 2, i_left_follower = 1, i_right_leader = 15, i_right_follower = 16;
 
   CANSparkMax left_leader = new CANSparkMax(i_left_leader, MotorType.kBrushless);
-  CANSparkMax left_follower = new CANSparkMax(i_left_follower, MotorType.kBrushless);
+  //CANSparkMax left_follower = new CANSparkMax(i_left_follower, MotorType.kBrushless);
   CANSparkMax right_leader = new CANSparkMax(i_right_leader, MotorType.kBrushless);
-  CANSparkMax right_follower = new CANSparkMax(i_right_follower, MotorType.kBrushless);
+  //CANSparkMax right_follower = new CANSparkMax(i_right_follower, MotorType.kBrushless);
 
   DifferentialDrive dt;
 
@@ -25,13 +25,14 @@ public class FancierRobot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    left_follower.follow(left_leader);
-    right_follower.follow(right_leader);
+    left_leader.restoreFactoryDefaults();
+    right_leader.restoreFactoryDefaults();
+    //left_follower.follow(left_leader);
+    //right_follower.follow(right_leader);
 
     left_leader.setInverted(false);
     right_leader.setInverted(true);
 
-    dt = new DifferentialDrive(left_leader, right_leader);
   }
 
   @Override
@@ -41,19 +42,22 @@ public class FancierRobot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    if (autoTimer.get() < 8) {// seconds
-    left_leader.set(0.1);
-    right_leader.set(0.1);
+    if (autoTimer.get() < 7) {// seconds
+      right_leader.set(0.2);
+      left_leader.set(0.2);
     } else {
-      left_leader.set(0);
-      right_leader.set(0);
+      right_leader.set(-0.2);
+      left_leader.set(0.2);    
     }
   }
-
+  @Override
+  public void teleopInit(){
+    dt = new DifferentialDrive(left_leader, right_leader);
+  }
   @Override
   public void teleopPeriodic() {
-    double speed = driver.getLeftY();
-    double rotation = driver.getRightX();
-    dt.arcadeDrive(speed, rotation, true);
+    double speed = - driver.getLeftY() * 0.7;
+    double rotation = - driver.getRightX() * 0.7;
+    dt.curvatureDrive(speed, rotation, true);
   }
 }
