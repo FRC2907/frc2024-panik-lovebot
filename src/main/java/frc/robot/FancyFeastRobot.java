@@ -22,10 +22,10 @@ public class FancyFeastRobot extends TimedRobot {
   CANSparkMax arm_leader = new CANSparkMax(i_arm_leader_right, MotorType.kBrushless);
   CANSparkMax arm_follower = new CANSparkMax(i_arm_follower_left, MotorType.kBrushless);
 
-  CANSparkMax shooter_leader = new CANSparkMax(i_shooter_leader, MotorType.kBrushless);
+  /*CANSparkMax shooter_leader = new CANSparkMax(i_shooter_leader, MotorType.kBrushless);
   CANSparkMax shooter_follower = new CANSparkMax(i_shooter_follower, MotorType.kBrushless);
 
-  CANSparkMax intake = new CANSparkMax(i_intake, MotorType.kBrushless);
+  CANSparkMax intake = new CANSparkMax(i_intake, MotorType.kBrushless);*/
 
   DifferentialDrive dt;
 
@@ -36,6 +36,21 @@ public class FancyFeastRobot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    left_leader.restoreFactoryDefaults();
+    right_leader.restoreFactoryDefaults();
+    left_follower.restoreFactoryDefaults();
+    right_follower.restoreFactoryDefaults();
+
+    arm_follower.restoreFactoryDefaults();
+    arm_leader.restoreFactoryDefaults();
+
+    //shooter_follower.restoreFactoryDefaults();
+    //shooter_leader.restoreFactoryDefaults();
+
+    //intake.restoreFactoryDefaults();
+    
+    
+
     left_follower.follow(left_leader);
     right_follower.follow(right_leader);
     left_leader.setInverted(false);
@@ -43,11 +58,11 @@ public class FancyFeastRobot extends TimedRobot {
 
     arm_follower.follow(arm_leader);
     arm_leader.setInverted(false);
-    arm_follower.setInverted(true);
+    arm_follower.setInverted(false);
 
-    shooter_follower.follow(shooter_leader);
+    /*shooter_follower.follow(shooter_leader);
     shooter_leader.setInverted(true);
-    shooter_follower.setInverted(true);
+    shooter_follower.setInverted(true);*/
 
 
   }
@@ -73,32 +88,32 @@ public class FancyFeastRobot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    double speed = driver.getLeftY();
-    double rotation = driver.getRightX();
+    double speed = - driver.getLeftY();
+    double rotation = - driver.getRightX();
     dt.arcadeDrive(speed, rotation, true);
 
     arm_leader.set(operator.getRightY());
 
     //hold to speed up/shoot
     if (operator.getR2Button()){
-      shooter_leader.set(0.5);
+      //shooter_leader.set(0.5);
     }
     //turns on intake to shoot
     if (operator.getR2ButtonReleased()){
-      intake.set(-0.3);
+      //intake.set(-0.3);
     }
     //intake
     if (operator.getL2Button()){
-      intake.set(0.3);
+      //intake.set(0.3);
     }
     //turn off intake and shooter
     if (operator.getL1ButtonPressed()){
-      intake.set(0);
-      shooter_leader.set(0);
+     // intake.set(0);
+      //shooter_leader.set(0);
     }
     //outtake
     if (operator.getR1ButtonPressed()){
-      intake.set(-0.3);
+      //intake.set(-0.3);
     }
   }
 }

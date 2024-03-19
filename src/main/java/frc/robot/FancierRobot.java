@@ -42,12 +42,12 @@ public class FancierRobot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    if (autoTimer.get() < 7) {// seconds
+    if (autoTimer.get() < 6) {// seconds
       right_leader.set(0.2);
       left_leader.set(0.2);
     } else {
-      right_leader.set(-0.2);
-      left_leader.set(0.2);    
+      right_leader.set(-1);
+      left_leader.set(1);    
     }
   }
   @Override
@@ -56,8 +56,8 @@ public class FancierRobot extends TimedRobot {
   }
   @Override
   public void teleopPeriodic() {
-    double speed = - driver.getLeftY() * 0.7;
-    double rotation = - driver.getRightX() * 0.7;
+    double speed = - driver.getRightY() * 0.7;
+    double rotation = - driver.getLeftX() * 0.4;
     dt.curvatureDrive(speed, rotation, true);
   }
 }
