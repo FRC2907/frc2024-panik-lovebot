@@ -75,9 +75,11 @@ public class FancyFeastRobot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     if (autoTimer.get() < 6) {// seconds
-      dt.arcadeDrive(0.1, 0);
+      right_leader.set(0.2);
+      left_leader.set(0.2);
     } else {
-      dt.arcadeDrive(0, 1);
+      right_leader.set(-1);
+      left_leader.set(1);    
     }
   }
 
