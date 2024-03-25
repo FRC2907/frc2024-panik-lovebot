@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
-public class FancyMecanumRobot extends TimedRobot {
+public class FancierMecanumRobot extends TimedRobot {
   int //i_left_leader = 1, i_left_follower = 2, i_right_leader = 15, i_right_follower = 16,
       i_top_left_leader = 1, i_top_left_follower = 2, i_bottom_left_leader = 5, i_bottom_left_follower = 6, //TODO placeholders, replace
       i_top_right_leader = 15, i_top_right_follower = 16, i_bottom_right_leader = 11, i_bottom_right_follower = 10, //TODO placeholders, replace
@@ -36,6 +36,7 @@ public class FancyMecanumRobot extends TimedRobot {
 
   CANSparkMax intake = new CANSparkMax(i_intake, MotorType.kBrushless);*/
 
+  public DriveMode mode;
   DifferentialDrive dt;
 
   PS4Controller driver = new PS4Controller(0);
@@ -81,6 +82,53 @@ public class FancyMecanumRobot extends TimedRobot {
     shooter_leader.setInverted(true);
     shooter_follower.setInverted(true);*/
   }
+  public boolean getLeftMagnitude(){
+    if (driver.getLeftX() > 0){
+      return true;
+    } else if (driver.getLeftY() > 0 ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  public boolean getRightMagnitude(){
+    if (driver.getRightX() > 0){
+      return true;
+    } else if (driver.getRightY() > 0 ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public enum DriveMode {
+    AUTO, FIELD_FORWARD, FIELD_REVERSED, LOCAL_FORWARD, LOCAL_REVERSED
+  }
+  public void setDriveMode(DriveMode newMode){
+    mode = newMode;
+  }
+  public DriveMode getDriveMode(){
+    return mode;
+  }
+  public void handleDriving(double speedV, double speedH, double rotation){
+    switch (mode){
+      case LOCAL_FORWARD:
+        if (getLeftMagnitude() || getRightMagnitude()){ 
+          MecanumDrive.driveCartesianIK(speedV, speedH, rotation);
+        }
+        break;
+      case LOCAL_REVERSED:
+        if (getLeftMagnitude() || getRightMagnitude()){
+          MecanumDrive.driveCartesianIK( - speedV, - speedH, - rotation);
+        }
+      case FIELD_FORWARD:
+        break;
+      case FIELD_REVERSED:
+        break;
+      case AUTO:
+        break;
+    }
+  }
 
   @Override
   public void autonomousInit() {
@@ -112,7 +160,8 @@ public class FancyMecanumRobot extends TimedRobot {
     double speedVertical = - driver.getLeftY();
     double speedHorizontal = - driver.getLeftX();
     double rotation = - driver.getRightX();
-    MecanumDrive.driveCartesianIK(speedVertical, speedHorizontal, rotation);
+    handleDriving(speedVertical, speedHorizontal, rotation);
+    //MecanumDrive.driveCartesianIK(speedVertical, speedHorizontal, rotation);
 
     arm_leader.set(operator.getRightY());
 
