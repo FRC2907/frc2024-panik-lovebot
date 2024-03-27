@@ -11,21 +11,15 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 public class FancierMecanumRobot extends TimedRobot {
   int //i_left_leader = 1, i_left_follower = 2, i_right_leader = 15, i_right_follower = 16,
-      i_top_left_leader = 1, i_top_left_follower = 2, i_bottom_left_leader = 5, i_bottom_left_follower = 6, //TODO placeholders, replace
-      i_top_right_leader = 15, i_top_right_follower = 16, i_bottom_right_leader = 11, i_bottom_right_follower = 10, //TODO placeholders, replace
+      i_top_left = 1, i_bottom_left = 5, i_top_right = 16, i_bottom_right = 11, //TODO placeholders, replace
       i_arm_follower_left = 3, i_arm_leader_right = 14, 
       i_shooter_follower = 4, i_shooter_leader = 13, 
       i_intake = 12;
 
-  CANSparkMax top_left_leader = new CANSparkMax(i_top_left_leader, MotorType.kBrushless);
-  CANSparkMax top_left_follower = new CANSparkMax(i_top_left_follower, MotorType.kBrushless);
-  CANSparkMax bottom_left_leader = new CANSparkMax(i_bottom_left_leader, MotorType.kBrushless);
-  CANSparkMax bottom_left_follower = new CANSparkMax(i_bottom_left_follower, MotorType.kBrushless);
-
-  CANSparkMax top_right_leader = new CANSparkMax(i_top_right_leader, MotorType.kBrushless);
-  CANSparkMax top_right_follower = new CANSparkMax(i_top_right_follower, MotorType.kBrushless);
-  CANSparkMax bottom_right_leader = new CANSparkMax(i_bottom_right_leader, MotorType.kBrushless);
-  CANSparkMax bottom_right_follower = new CANSparkMax(i_bottom_right_follower, MotorType.kBrushless);
+  CANSparkMax top_left = new CANSparkMax(i_top_left, MotorType.kBrushless);
+  CANSparkMax bottom_left = new CANSparkMax(i_bottom_left, MotorType.kBrushless);
+  CANSparkMax top_right = new CANSparkMax(i_top_right, MotorType.kBrushless);
+  CANSparkMax bottom_right = new CANSparkMax(i_bottom_right, MotorType.kBrushless);
 
 
   CANSparkMax arm_leader = new CANSparkMax(i_arm_leader_right, MotorType.kBrushless);
@@ -46,14 +40,10 @@ public class FancierMecanumRobot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    top_left_leader.restoreFactoryDefaults();
-    top_left_follower.restoreFactoryDefaults();
-    bottom_left_leader.restoreFactoryDefaults();
-    bottom_left_follower.restoreFactoryDefaults();
-    top_right_leader.restoreFactoryDefaults();
-    top_right_follower.restoreFactoryDefaults();
-    bottom_right_leader.restoreFactoryDefaults();
-    bottom_right_follower.restoreFactoryDefaults();
+    top_left.restoreFactoryDefaults();
+    bottom_left.restoreFactoryDefaults();
+    top_right.restoreFactoryDefaults();
+    bottom_right.restoreFactoryDefaults();
 
     arm_follower.restoreFactoryDefaults();
     arm_leader.restoreFactoryDefaults();
@@ -65,14 +55,10 @@ public class FancierMecanumRobot extends TimedRobot {
     
     
 
-    top_left_follower.follow(top_left_leader);
-    bottom_left_follower.follow(bottom_left_leader);
-    top_right_follower.follow(top_right_leader);
-    bottom_right_follower.follow(bottom_right_leader);
-    top_left_leader.setInverted(false);
-    bottom_left_leader.setInverted(false);
-    top_right_leader.setInverted(true);
-    bottom_right_leader.setInverted(true);
+    top_left.setInverted(false);
+    bottom_left.setInverted(false);
+    top_right.setInverted(true);
+    bottom_right.setInverted(true);
 
     arm_follower.follow(arm_leader);
     arm_leader.setInverted(false);
@@ -138,21 +124,21 @@ public class FancierMecanumRobot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     if (autoTimer.get() < 6) {// seconds
-      top_right_leader.set(0.2);
-      bottom_right_leader.set(0.2);
-      top_left_leader.set(0.2);
-      bottom_left_leader.set(0.2);
+      top_left.set(0.2);
+      bottom_left.set(0.2);
+      top_right.set(0.2);
+      bottom_right.set(0.2);
     } else {
-      top_right_leader.set(-1);
-      bottom_right_leader.set(-1);
-      top_left_leader.set(1);    
-      bottom_left_leader.set(1);
+      top_left.set(1);    
+      bottom_left.set(1);
+      top_right.set(-1);
+      bottom_right.set(-1);
     }
   }
 
   @Override
   public void teleopInit(){
-    MecanumDrive dt = new MecanumDrive(top_left_leader, bottom_left_leader, top_right_leader, bottom_right_leader);
+    MecanumDrive dt = new MecanumDrive(top_left, bottom_left, top_right, bottom_right);
   }
 
   @Override
@@ -161,7 +147,6 @@ public class FancierMecanumRobot extends TimedRobot {
     double speedHorizontal = - driver.getLeftX();
     double rotation = - driver.getRightX();
     handleDriving(speedVertical, speedHorizontal, rotation);
-    //MecanumDrive.driveCartesianIK(speedVertical, speedHorizontal, rotation);
 
     arm_leader.set(operator.getRightY());
 
