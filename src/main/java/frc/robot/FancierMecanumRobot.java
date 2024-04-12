@@ -6,7 +6,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 public class FancierMecanumRobot extends TimedRobot {
@@ -31,7 +30,7 @@ public class FancierMecanumRobot extends TimedRobot {
   CANSparkMax intake = new CANSparkMax(i_intake, MotorType.kBrushless);*/
 
   public DriveMode mode;
-  DifferentialDrive dt;
+  MecanumDrive dt;
 
   PS4Controller driver = new PS4Controller(0);
   PS4Controller operator = new PS4Controller(1);
@@ -40,6 +39,8 @@ public class FancierMecanumRobot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    dt = new MecanumDrive(top_left, bottom_left, top_right, bottom_right);
+
     top_left.restoreFactoryDefaults();
     bottom_left.restoreFactoryDefaults();
     top_right.restoreFactoryDefaults();
@@ -100,12 +101,12 @@ public class FancierMecanumRobot extends TimedRobot {
     switch (mode){
       case LOCAL_FORWARD:
         if (getLeftMagnitude() || getRightMagnitude()){ 
-          MecanumDrive.driveCartesianIK(speedV, speedH, rotation);
+          dt.driveCartesian(speedV, speedH, rotation);
         }
         break;
       case LOCAL_REVERSED:
         if (getLeftMagnitude() || getRightMagnitude()){
-          MecanumDrive.driveCartesianIK( - speedV, - speedH, - rotation);
+          dt.driveCartesian( - speedV, - speedH, - rotation);
         }
       case FIELD_FORWARD:
         break;
@@ -138,7 +139,6 @@ public class FancierMecanumRobot extends TimedRobot {
 
   @Override
   public void teleopInit(){
-    MecanumDrive dt = new MecanumDrive(top_left, bottom_left, top_right, bottom_right);
   }
 
   @Override

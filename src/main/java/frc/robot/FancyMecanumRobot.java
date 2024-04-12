@@ -6,7 +6,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 public class FancyMecanumRobot extends TimedRobot {
@@ -30,7 +29,7 @@ public class FancyMecanumRobot extends TimedRobot {
 
   CANSparkMax intake = new CANSparkMax(i_intake, MotorType.kBrushless);*/
 
-  DifferentialDrive dt;
+  MecanumDrive dt;
 
   PS4Controller driver = new PS4Controller(0);
   PS4Controller operator = new PS4Controller(1);
@@ -39,6 +38,8 @@ public class FancyMecanumRobot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    dt = new MecanumDrive(top_left, bottom_left, top_right, bottom_right);
+
     top_left.restoreFactoryDefaults();
     bottom_left.restoreFactoryDefaults();
     top_right.restoreFactoryDefaults();
@@ -90,7 +91,6 @@ public class FancyMecanumRobot extends TimedRobot {
 
   @Override
   public void teleopInit(){
-    MecanumDrive dt = new MecanumDrive(top_left, bottom_left, top_right, bottom_right);
   }
 
   @Override
@@ -98,7 +98,7 @@ public class FancyMecanumRobot extends TimedRobot {
     double speedVertical = - driver.getLeftY();
     double speedHorizontal = - driver.getLeftX();
     double rotation = - driver.getRightX();
-    MecanumDrive.driveCartesianIK(speedVertical, speedHorizontal, rotation);
+    dt.driveCartesian(speedVertical, speedHorizontal, rotation);
 
     arm_leader.set(operator.getRightY());
 
