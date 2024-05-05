@@ -9,8 +9,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 public class FancyMecanumRobot extends TimedRobot {
-  int //i_left_leader = 1, i_left_follower = 2, i_right_leader = 15, i_right_follower = 16,
-      i_top_left = 1, i_bottom_left = 5, i_top_right = 16, i_bottom_right = 11; //TODO placeholders, replace
+  int i_top_left = 1, i_bottom_left = 5, i_top_right = 16, i_bottom_right = 11; //TODO placeholders, replace
 
   CANSparkMax top_left = new CANSparkMax(i_top_left, MotorType.kBrushless);
   CANSparkMax bottom_left = new CANSparkMax(i_bottom_left, MotorType.kBrushless);
