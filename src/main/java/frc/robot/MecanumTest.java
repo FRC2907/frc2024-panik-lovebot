@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
-public class FancyMecanumRobot extends TimedRobot {
+public class MecanumTest extends TimedRobot {
   int //i_left_leader = 1, i_left_follower = 2, i_right_leader = 15, i_right_follower = 16,
       i_top_left = 1, i_bottom_left = 5, i_top_right = 16, i_bottom_right = 11; //TODO placeholders, replace
 
@@ -16,6 +16,8 @@ public class FancyMecanumRobot extends TimedRobot {
   CANSparkMax bottom_left = new CANSparkMax(i_bottom_left, MotorType.kBrushless);
   CANSparkMax top_right = new CANSparkMax(i_top_right, MotorType.kBrushless);
   CANSparkMax bottom_right = new CANSparkMax(i_bottom_right, MotorType.kBrushless);
+
+
 
   MecanumDrive dt;
 
@@ -32,7 +34,7 @@ public class FancyMecanumRobot extends TimedRobot {
     bottom_left.restoreFactoryDefaults();
     top_right.restoreFactoryDefaults();
     bottom_right.restoreFactoryDefaults();
-    
+
     top_left.setInverted(false);
     bottom_left.setInverted(false);
     top_right.setInverted(true);
@@ -46,21 +48,15 @@ public class FancyMecanumRobot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    if (autoTimer.get() < 6) {// seconds
-      top_left.set(0.2);
-      bottom_left.set(0.2);
-      top_right.set(0.2);
-      bottom_right.set(0.2);
-    } else {
-      top_left.set(1);    
-      bottom_left.set(1);
-      top_right.set(-1);
-      bottom_right.set(-1);
-    }
+      top_left.set(0.1);
+      bottom_left.set(0.1);
+      top_right.set(0.1);
+      bottom_right.set(0.1);
   }
 
   @Override
-  public void teleopInit(){}
+  public void teleopInit(){
+  }
 
   @Override
   public void teleopPeriodic() {
@@ -68,5 +64,28 @@ public class FancyMecanumRobot extends TimedRobot {
     double speedHorizontal = - driver.getLeftX();
     double rotation = - driver.getRightX();
     dt.driveCartesian(speedVertical, speedHorizontal, rotation);
+
+
+    //hold to speed up/shoot
+    if (operator.getR2Button()){
+      //shooter_leader.set(0.5);
+    }
+    //turns on intake to shoot
+    if (operator.getR2ButtonReleased()){
+      //intake.set(-0.3);
+    }
+    //intake
+    if (operator.getL2Button()){
+      //intake.set(0.3);
+    }
+    //turn off intake and shooter
+    if (operator.getL1ButtonPressed()){
+     // intake.set(0);
+      //shooter_leader.set(0);
+    }
+    //outtake
+    if (operator.getR1ButtonPressed()){
+      //intake.set(-0.3);
+    }
   }
 }
