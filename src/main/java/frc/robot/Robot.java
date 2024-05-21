@@ -4,8 +4,8 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -23,12 +23,14 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
 
-  int i_left_leader = 1, i_left_follower = 2, i_right_leader = 15, i_right_follower = 16;
+  int i_left_leader = 1, i_left_follower_1 = 2, i_left_follower_2 = 3, i_right_leader = 14, i_right_follower_1 = 15, i_right_follower_2 = 16;
 
-  CANSparkMax left_leader = new CANSparkMax(i_left_leader, MotorType.kBrushless);
-  CANSparkMax left_follower = new CANSparkMax(i_left_follower, MotorType.kBrushless);
-  CANSparkMax right_leader = new CANSparkMax(i_right_leader, MotorType.kBrushless);
-  CANSparkMax right_follower = new CANSparkMax(i_right_follower, MotorType.kBrushless);
+  TalonFX left_leader = new TalonFX(i_left_leader);
+  TalonFX left_follower_1 = new TalonFX(i_left_follower_1);
+  TalonFX left_follower_2 = new TalonFX(i_left_follower_2);
+  TalonFX right_leader = new TalonFX(i_right_leader);
+  TalonFX right_follower_1 = new TalonFX(i_right_follower_1);
+  TalonFX right_follower_2 = new TalonFX(i_right_follower_2);
 
   PS4Controller driver = new PS4Controller(0);
   PS4Controller operator = new PS4Controller(1);
@@ -37,8 +39,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    left_follower.follow(left_leader);
-    right_follower.follow(right_leader);
+    left_follower_1.setControl(new Follower(i_left_leader, false));
+    left_follower_2.setControl(new Follower(i_left_leader, false));
+    right_follower_1.setControl(new Follower(i_right_leader, false));
+    right_follower_2.setControl(new Follower(i_right_leader, false));
 
     left_leader.setInverted(false);
     right_leader.setInverted(true);
@@ -51,13 +55,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    if (autoTimer.get() < 8) {// seconds
-    left_leader.set(0.1);
-    right_leader.set(0.1);
-    } else {
+    //if (autoTimer.get() < 8) {// seconds
+    //left_leader.set(0.1);
+    //right_leader.set(0.1);
+    //} else {
       left_leader.set(0);
       right_leader.set(0);
-    }
+    //}
   }
 
   @Override
