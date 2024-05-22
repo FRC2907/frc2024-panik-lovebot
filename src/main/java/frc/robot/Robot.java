@@ -59,8 +59,8 @@ public class Robot extends TimedRobot {
     //left_leader.set(0.1);
     //right_leader.set(0.1);
     //} else {
-      left_leader.set(0);
-      right_leader.set(0);
+    left_leader.set(0);
+    right_leader.set(0);
     //}
   }
 
