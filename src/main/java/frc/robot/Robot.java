@@ -35,6 +35,12 @@ public class Robot extends TimedRobot {
   TalonFX right_follower_1 = new TalonFX(i_right_follower_1);
   TalonFX right_follower_2 = new TalonFX(i_right_follower_2);
 
+  TalonFX shooter = new TalonFX(i_shooter);
+  TalonFX shooter2 = new TalonFX(i_shooter_2);
+  TalonFX shooter_slave = new TalonFX(i_shooter_slave);
+  TalonFX shooter_2_slave = new TalonFX(i_shooter_2_slave);
+  TalonFX shooter_extension = new TalonFX(i_shooter_extension);
+
   PS4Controller driver = new PS4Controller(0);
   PS4Controller operator = new PS4Controller(1);
 
