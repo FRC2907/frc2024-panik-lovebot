@@ -51,10 +51,10 @@ public class FancyMecanumRobot extends TimedRobot {
       top_right.set(0.2);
       bottom_right.set(0.2);
     } else {
-      top_left.set(1);    
-      bottom_left.set(1);
-      top_right.set(-1);
-      bottom_right.set(-1);
+      top_left.set(1.0);    
+      bottom_left.set(1.0);
+      top_right.set(-1.0);
+      bottom_right.set(-1.0);
     }
   }
 
