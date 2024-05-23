@@ -163,7 +163,7 @@ public class Robot extends TimedRobot {
         intakeOn = false;
       }
     }
-    if (driver.getR2Button){
+    if (driver.getR2Button()){
       left_shooter.set(1);
       right_shooter.set(1);
     } else {
