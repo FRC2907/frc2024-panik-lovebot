@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
   int i_left_leader = 1, i_left_follower_1 = 2, i_left_follower_2 = 3, i_right_leader = 14, i_right_follower_1 = 15, i_right_follower_2 = 16,
       i_shooter = 7, i_shooter_2 = 8, i_shooter_slave = 9, i_shooter_2_slave = 10,
       i_shooter_extension = 11, 
-      i_intake = 12, i_intake slave = 13;
+      i_intake = 12, i_intake_slave = 13;
 
   TalonFX left_leader = new TalonFX(i_left_leader);
   TalonFX left_follower_1 = new TalonFX(i_left_follower_1);
@@ -54,10 +54,9 @@ public class Robot extends TimedRobot {
   private static Solenoid rightSolenoid_extend;
   private static Solenoid rightSolenoid_retract;
   private Compressor compressor;
-  private boolean compressorIsRunning;
-  private boolean pneumaticOn = false;
 
-  public static final int SOLENOIDR_EXTEND = 3;
+  private boolean compressorIsRunning;
+  private boolean pneumaticOn;
 
   @Override
   public void robotInit() {
@@ -74,13 +73,15 @@ public class Robot extends TimedRobot {
     rightSolenoid_extend = new Solenoid(PneumaticsModuleType.REVPH, 3); //TODO find correct module type if applicable
     rightSolenoid_retract = new Solenoid(PneumaticsModuleType.REVPH, 2); //TODO find correct module type if applicable
     compressor = new Compressor(PneumaticsModuleType.REVPH); //TODO find correct module type if applicable
+
+    pneumaticOn = false;
   }
 
   public void pneumaticHandler(boolean position){
     leftSolenoid_extend.set(position);
-    leftSolenoid_retract.set(position);
+    rightSolenoid_extend.set(position);
 
-    rightSolenoid_extend.set(!position);
+    leftSolenoid_retract.set(!position);
     rightSolenoid_retract.set(!position);
   }
 
