@@ -68,11 +68,11 @@ public class Robot extends TimedRobot {
     left_leader.setInverted(false);
     right_leader.setInverted(true);
 
-    leftSolenoid_extend = new Solenoid(PneumaticsModuleType.REVPH, 1); //TODO find correct module type if applicable
-    leftSolenoid_retract = new Solenoid(PneumaticsModuleType.REVPH, 0); //TODO find correct module type if applicable
-    rightSolenoid_extend = new Solenoid(PneumaticsModuleType.REVPH, 3); //TODO find correct module type if applicable
-    rightSolenoid_retract = new Solenoid(PneumaticsModuleType.REVPH, 2); //TODO find correct module type if applicable
-    compressor = new Compressor(PneumaticsModuleType.REVPH); //TODO find correct module type if applicable
+    leftSolenoid_extend = new Solenoid(PneumaticsModuleType.CTREPCM, 1); 
+    leftSolenoid_retract = new Solenoid(PneumaticsModuleType.CTREPCM, 0); 
+    rightSolenoid_extend = new Solenoid(PneumaticsModuleType.CTREPCM, 3); 
+    rightSolenoid_retract = new Solenoid(PneumaticsModuleType.CTREPCM, 2); 
+    compressor = new Compressor(PneumaticsModuleType.CTREPCM); 
 
     pneumaticOn = false;
   }
