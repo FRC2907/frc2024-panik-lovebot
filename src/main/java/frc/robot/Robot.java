@@ -26,7 +26,10 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
 
-  int i_left_leader = 1, i_left_follower_1 = 2, i_left_follower_2 = 3, i_right_leader = 14, i_right_follower_1 = 15, i_right_follower_2 = 16;
+  int i_left_leader = 1, i_left_follower_1 = 2, i_left_follower_2 = 3, i_right_leader = 14, i_right_follower_1 = 15, i_right_follower_2 = 16,
+      i_shooter = 7, i_shooter_2 = 8, i_shooter_slave = 9, i_shooter_2_slave = 10,
+      i_shooter_extension = 11, 
+      i_intake = 12, i_intake slave = 13;
 
   TalonFX left_leader = new TalonFX(i_left_leader);
   TalonFX left_follower_1 = new TalonFX(i_left_follower_1);
@@ -34,6 +37,12 @@ public class Robot extends TimedRobot {
   TalonFX right_leader = new TalonFX(i_right_leader);
   TalonFX right_follower_1 = new TalonFX(i_right_follower_1);
   TalonFX right_follower_2 = new TalonFX(i_right_follower_2);
+
+  TalonFX shooter = new TalonFX(i_shooter);
+  TalonFX shooter2 = new TalonFX(i_shooter_2);
+  TalonFX shooter_slave = new TalonFX(i_shooter_slave);
+  TalonFX shooter_2_slave = new TalonFX(i_shooter_2_slave);
+  TalonFX shooter_extension = new TalonFX(i_shooter_extension);
 
   PS4Controller driver = new PS4Controller(0);
   PS4Controller operator = new PS4Controller(1);
@@ -101,8 +110,8 @@ public class Robot extends TimedRobot {
     //left_leader.set(0.1);
     //right_leader.set(0.1);
     //} else {
-    left_leader.set(0);
-    right_leader.set(0);
+    left_leader.set(0.0);
+    right_leader.set(0.0);
     //}
   }
 
@@ -113,8 +122,8 @@ public class Robot extends TimedRobot {
     double left = speed + rotation;
     double right = speed - rotation;
 
-    if (left > 1 || left < -1) { right = right / Math.abs(left); left = left / Math.abs(left); }
-    if (right > 1 || right < -1) { left = left / Math.abs(right); right = right / Math.abs(right); }
+    if (left > 1.0 || left < -1.0) { right = right / Math.abs(left); left = left / Math.abs(left); }
+    if (right > 1.0 || right < -1.0) { left = left / Math.abs(right); right = right / Math.abs(right); }
 
     left_leader.set(left);
     right_leader.set(right);
