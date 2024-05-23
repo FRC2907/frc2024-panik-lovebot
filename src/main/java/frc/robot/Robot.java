@@ -7,7 +7,10 @@ package frc.robot;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -37,6 +40,16 @@ public class Robot extends TimedRobot {
 
   Timer autoTimer = new Timer();
 
+  private static Solenoid leftSolenoid_extend;
+  private static Solenoid leftSolenoid_retract;
+  private static Solenoid rightSolenoid_extend;
+  private static Solenoid rightSolenoid_retract;
+  private Compressor compressor;
+  private boolean compressorIsRunning;
+  private boolean pneumaticOn = false;
+
+  public static final int SOLENOIDR_EXTEND = 3;
+
   @Override
   public void robotInit() {
     left_follower_1.setControl(new Follower(i_left_leader, false));
@@ -46,6 +59,35 @@ public class Robot extends TimedRobot {
 
     left_leader.setInverted(false);
     right_leader.setInverted(true);
+
+    leftSolenoid_extend = new Solenoid(PneumaticsModuleType.REVPH, 1); //TODO find correct module type if applicable
+    leftSolenoid_retract = new Solenoid(PneumaticsModuleType.REVPH, 0); //TODO find correct module type if applicable
+    rightSolenoid_extend = new Solenoid(PneumaticsModuleType.REVPH, 3); //TODO find correct module type if applicable
+    rightSolenoid_retract = new Solenoid(PneumaticsModuleType.REVPH, 2); //TODO find correct module type if applicable
+    compressor = new Compressor(PneumaticsModuleType.REVPH); //TODO find correct module type if applicable
+  }
+
+  public void pneumaticHandler(boolean position){
+    leftSolenoid_extend.set(position);
+    leftSolenoid_retract.set(position);
+
+    rightSolenoid_extend.set(!position);
+    rightSolenoid_retract.set(!position);
+  }
+
+  public void compressorHandler(boolean compOn){
+    if (compOn == true){
+      compressor.enableHybrid(0.5, 1); //TODO figure out what this is and if it's what we need
+      compressorIsRunning = true;
+      if (compressor.getPressureSwitchValue() == false){
+        compressor.disable(); //TODO figure out if this is the right function to use
+      }
+    } else {
+      compressor.disable();
+      compressorIsRunning = false;
+    }
+
+    System.out.println("Compressor pressure is low: " + compressor.getPressureSwitchValue());
   }
 
   @Override
@@ -76,5 +118,14 @@ public class Robot extends TimedRobot {
 
     left_leader.set(left);
     right_leader.set(right);
+
+    if (operator.getCrossButton()){
+      if (pneumaticOn == false){
+        pneumaticOn = true;
+      } else {
+        pneumaticOn = false;
+      }
+    }
+    pneumaticHandler(pneumaticOn);
   }
 }
