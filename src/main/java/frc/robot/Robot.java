@@ -10,13 +10,14 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -73,6 +74,10 @@ public class Robot extends TimedRobot {
 
   private boolean compressorIsRunning;
 
+  private AddressableLED m_led;
+  private AddressableLEDBuffer m_ledBuffer;
+  private int m_rainbowFirstPixelHue;
+
   private boolean pneumaticOn;
   private boolean intakeOn;
 
@@ -101,16 +106,31 @@ public class Robot extends TimedRobot {
     rightSolenoid_retract = new Solenoid(PneumaticsModuleType.CTREPCM, 2); 
     compressor = new Compressor(PneumaticsModuleType.CTREPCM); 
 
+    m_led = new AddressableLED(9); //TODO placeholder port
+    m_ledBuffer = new AddressableLEDBuffer(60); //TODO find amount of leds
+    m_led.setLength(m_ledBuffer.getLength());
+    m_led.setData(m_ledBuffer);
+    m_led.start();
+
     pneumaticOn = false;
     intakeOn = false;
   }
 
-  public void pneumaticHandler(boolean position){
+  private void pneumaticHandler(boolean position){
     leftSolenoid_extend.set(false);
     rightSolenoid_extend.set(false);
 
     leftSolenoid_retract.set(false);
     rightSolenoid_retract.set(!position);
+  }
+
+  private void rainbow(){
+    for (int i = 0; i < m_ledBuffer.getLength(); i++){
+      final int hue = (m_rainbowFirstPixelHue + (i * 180 / m_ledBuffer.getLength())) % 180;
+      m_ledBuffer.setHSV(i, hue, 255, 128);
+    }
+    m_rainbowFirstPixelHue += 3;
+    m_rainbowFirstPixelHue %= 180;
   }
 
   /*public void compressorHandler(boolean compOn){
@@ -160,8 +180,6 @@ public class Robot extends TimedRobot {
     left_leader.set(left);
     right_leader.set(right);
 
-    pneumaticHandler(pneumaticOn);
-
     if (operator.getCrossButtonPressed()){
       if (pneumaticOn == false){
         pneumaticOn = true;
@@ -169,6 +187,8 @@ public class Robot extends TimedRobot {
         pneumaticOn = false;
       }
     }
+
+    pneumaticHandler(pneumaticOn);
 
     if (driver.getCircleButtonPressed()){
       if (intakeOn == false){
@@ -197,5 +217,7 @@ public class Robot extends TimedRobot {
     } else {
       shooter_extension.set(ControlMode.PercentOutput, 0);
     }
+
+    rainbow();
   }
 }
