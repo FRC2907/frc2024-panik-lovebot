@@ -80,6 +80,7 @@ public class Robot extends TimedRobot {
 
   private boolean pneumaticOn;
   private boolean intakeOn;
+  private boolean intakeClimbOn;
 
   @Override
   public void robotInit() {
@@ -114,13 +115,14 @@ public class Robot extends TimedRobot {
 
     pneumaticOn = false;
     intakeOn = false;
+    intakeClimbOn = false;
   }
 
   private void pneumaticHandler(boolean position){
-    leftSolenoid_extend.set(false);
-    rightSolenoid_extend.set(false);
+    leftSolenoid_extend.set(position);
+    rightSolenoid_extend.set(position);
 
-    leftSolenoid_retract.set(false);
+    leftSolenoid_retract.set(!position);
     rightSolenoid_retract.set(!position);
   }
 
@@ -155,13 +157,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    //if (autoTimer.get() < 8) {// seconds
+    if (autoTimer.get() < 8) {// seconds
     //left_leader.set(0.1);
     //right_leader.set(0.1);
     //} else {
     left_leader.set(0.0);
     right_leader.set(0.0);
-    //}
+    }
   }
 
   @Override
@@ -174,8 +176,8 @@ public class Robot extends TimedRobot {
     if (left > 1.0 || left < -1.0) { right = right / Math.abs(left); left = left / Math.abs(left); }
     if (right > 1.0 || right < -1.0) { left = left / Math.abs(right); right = right / Math.abs(right); }
 
-    left = left / 5;
-    right = right / 5;
+    left = left / 2;
+    right = right / 2;
 
     left_leader.set(left);
     right_leader.set(right);
@@ -193,15 +195,23 @@ public class Robot extends TimedRobot {
     if (driver.getCircleButtonPressed()){
       if (intakeOn == false){
         intake.set(ControlMode.PercentOutput, 0.75);
-        intake_climb.set(ControlMode.PercentOutput, 0.75);
         hopper_left.set(ControlMode.PercentOutput, 0.75);
         intakeOn = true;
       } else {
         intake.set(ControlMode.PercentOutput, 0);
-        intake_climb.set(ControlMode.PercentOutput, 0);
         hopper_left.set(ControlMode.PercentOutput, 0);
         intakeOn = false;
       } 
+    }
+
+    if (driver.getTriangleButtonPressed()){
+      if (intakeClimbOn == false){
+        intake_climb.set(ControlMode.PercentOutput, 0.75);
+        intakeClimbOn = true;
+      } else {
+        intake_climb.set(ControlMode.PercentOutput, 0);
+        intakeClimbOn = false;
+      }
     }
 
     if (driver.getR2Button()){
