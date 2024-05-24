@@ -77,6 +77,8 @@ public class Robot extends TimedRobot {
   private AddressableLED m_led;
   private AddressableLEDBuffer m_ledBuffer;
   private int m_rainbowFirstPixelHue;
+  private int m_firstBlue;
+  private int m_firstOrange;
 
   private boolean pneumaticOn;
   private boolean intakeOn;
@@ -112,6 +114,8 @@ public class Robot extends TimedRobot {
     m_led.setLength(m_ledBuffer.getLength());
     m_led.setData(m_ledBuffer);
     m_led.start();
+    m_firstBlue = 0;
+    m_firstOrange = m_ledBuffer.getLength() / 2;
 
     pneumaticOn = false;
     intakeOn = false;
@@ -133,6 +137,20 @@ public class Robot extends TimedRobot {
     }
     m_rainbowFirstPixelHue += 3;
     m_rainbowFirstPixelHue %= 180;
+  }
+
+  private void lionPride(){
+    for (int i = 0; i < m_ledBuffer.getLength(); i++){
+      if ((m_firstBlue - 1) < i && i < m_firstOrange){
+        m_ledBuffer.setHSV(i, 213, 99, 77); //TODO s and v are entered for percentages, change if necessary
+      } else if ((m_firstOrange - 1) < i && i < m_firstBlue){
+        m_ledBuffer.setHSV(i, 33, 100, 100); //TODO s and v are entered for percentages, change if necessary
+      }
+    }
+    m_firstBlue += 1;
+    m_firstBlue %= m_ledBuffer.getLength();
+    m_firstOrange += 1;
+    m_firstOrange %= m_ledBuffer.getLength();
   }
 
   /*public void compressorHandler(boolean compOn){
@@ -229,5 +247,6 @@ public class Robot extends TimedRobot {
     }
 
     rainbow();
+    lionPride(); //choose which one
   }
 }
