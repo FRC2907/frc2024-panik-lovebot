@@ -77,12 +77,12 @@ public class Robot extends TimedRobot {
   private AddressableLED m_led;
   private AddressableLEDBuffer m_ledBuffer;
   private int m_rainbowFirstPixelHue;
-  private int m_firstBlue;
-  private int m_firstOrange;
 
   private boolean pneumaticOn;
   private boolean intakeOn;
   private boolean intakeClimbOn;
+
+  int[] array;
 
   @Override
   public void robotInit() {
@@ -114,8 +114,12 @@ public class Robot extends TimedRobot {
     m_led.setLength(m_ledBuffer.getLength());
     m_led.setData(m_ledBuffer);
     m_led.start();
-    m_firstBlue = 0;
-    m_firstOrange = m_ledBuffer.getLength() / 2;
+
+    array = new int[m_ledBuffer.getLength()];
+    
+    for (int i = 0; i < m_ledBuffer.getLength(); i++){
+      array[i] = i;
+    }
 
     pneumaticOn = false;
     intakeOn = false;
@@ -141,17 +145,18 @@ public class Robot extends TimedRobot {
 
   private void lionPride(){
     for (int i = 0; i < m_ledBuffer.getLength(); i++){
-      if ((m_firstBlue - 1) < i && i < m_firstOrange){
+      if (array[i] < m_ledBuffer.getLength() / 2){
         m_ledBuffer.setHSV(i, 213, 99, 77); //TODO s and v are entered for percentages, change if necessary
-      } else if ((m_firstOrange - 1) < i && i < m_firstBlue){
+      } else if (array[i] > m_ledBuffer.getLength() / 2){
         m_ledBuffer.setHSV(i, 33, 100, 100); //TODO s and v are entered for percentages, change if necessary
       }
     }
-    m_firstBlue += 1;
-    m_firstBlue %= m_ledBuffer.getLength();
-    m_firstOrange += 1;
-    m_firstOrange %= m_ledBuffer.getLength();
+    for (int i = 0; i < m_ledBuffer.getLength(); i++){
+      array[i] += 1;
+      array[i] %= m_ledBuffer.getLength();
+    }
   }
+
 
   /*public void compressorHandler(boolean compOn){
     if (compOn == true){
