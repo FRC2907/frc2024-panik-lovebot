@@ -208,14 +208,20 @@ public class Robot extends TimedRobot {
     if (operator.getCrossButtonPressed()){
       if (pneumaticOn == false){
         pneumaticOn = true;
+        intake.set(ControlMode.PercentOutput, 0.75);
+        hopper_left.set(ControlMode.PercentOutput, 0.75);
+        intakeOn = true;
       } else {
         pneumaticOn = false;
+        intake.set(ControlMode.PercentOutput, 0);
+        hopper_left.set(ControlMode.PercentOutput, 0);
+        intakeOn = false;
       }
     }
 
     pneumaticHandler(pneumaticOn);
 
-    if (driver.getCircleButtonPressed()){
+    /*if (driver.getCircleButtonPressed()){
       if (intakeOn == false){
         intake.set(ControlMode.PercentOutput, 0.75);
         hopper_left.set(ControlMode.PercentOutput, 0.75);
@@ -225,9 +231,9 @@ public class Robot extends TimedRobot {
         hopper_left.set(ControlMode.PercentOutput, 0);
         intakeOn = false;
       } 
-    }
+    } */
 
-    if (driver.getTriangleButtonPressed()){
+    if (driver.getSquareButtonPressed()){
       if (intakeClimbOn == false){
         intake_climb.set(ControlMode.PercentOutput, 0.75);
         intakeClimbOn = true;
