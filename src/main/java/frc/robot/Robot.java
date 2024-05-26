@@ -157,21 +157,7 @@ public class Robot extends TimedRobot {
     }
   }
 
-
-  /*public void compressorHandler(boolean compOn){
-    if (compOn == true){
-      compressor.enableHybrid(0.5, 1); //TODO figure out what this is and if it's what we need
-      compressorIsRunning = true;
-      if (compressor.getPressureSwitchValue() == false){
-        compressor.disable(); //TODO figure out if this is the right function to use
-      }
-    } else {
-      compressor.disable();
-      compressorIsRunning = false;
-    }
-
-    System.out.println("Compressor pressure is low: " + compressor.getPressureSwitchValue());
-  } *///probably not necessary
+  
 
   @Override
   public void autonomousInit() {
