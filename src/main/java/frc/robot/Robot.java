@@ -66,6 +66,8 @@ public class Robot extends TimedRobot {
 
   Timer autoTimer = new Timer();
 
+  public DriveMode mode;
+
   private static Solenoid leftSolenoid_extend;
   private static Solenoid leftSolenoid_retract;
   private static Solenoid rightSolenoid_extend;
@@ -157,7 +159,29 @@ public class Robot extends TimedRobot {
     }
   }
 
-  
+  private enum DriveMode(){
+    AUTO, LOCAL_FORWARD, LOCAL_REVERSED
+  }
+
+  private void setDriveMode(DriveMode newMode){
+    mode = newMode;
+  }
+
+  private DriveMode getDriveMode(){
+    return mode;
+  }
+
+  private void handleDriving(){
+    switch(mode){
+      case AUTO:
+        break;
+      case LOCAL_FORWARD:
+        speed = -speed;
+        break;
+      case LOCAL_REVERSED:
+        speed = speed;
+    }
+  }
 
   @Override
   public void autonomousInit() {
@@ -177,8 +201,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    double speed = driver.getLeftY();
+    double speed = - driver.getLeftY();
     double rotation = driver.getRightX();
+
+    handleDriving();
+
     double left = speed + rotation;
     double right = speed - rotation;
 
@@ -241,6 +268,14 @@ public class Robot extends TimedRobot {
       shooter_extension.set(ControlMode.PercentOutput, -0.5);
     } else {
       shooter_extension.set(ControlMode.PercentOutput, 0);
+    }
+
+    if (driver.getR1ButtonPressed()){
+      if (getDriveMode == LOCAL_FORWARD){
+        setDriveMode(LOCAL_REVERSED);
+      } else if (getDriveMode == LOCAL_REVERSED){
+        setDriveMode(LOCAL_FORWARD);
+      }
     }
 
     rainbow();
