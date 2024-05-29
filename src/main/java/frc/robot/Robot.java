@@ -67,6 +67,7 @@ public class Robot extends TimedRobot {
   Timer autoTimer = new Timer();
 
   public DriveMode mode;
+  
 
   private static Solenoid leftSolenoid_extend;
   private static Solenoid leftSolenoid_retract;
@@ -159,7 +160,7 @@ public class Robot extends TimedRobot {
     }
   }
 
-  private enum DriveMode(){
+  public enum DriveMode{
     AUTO, LOCAL_FORWARD, LOCAL_REVERSED
   }
 
@@ -171,17 +172,18 @@ public class Robot extends TimedRobot {
     return mode;
   }
 
-  private void handleDriving(){
-    switch(mode){
-      case AUTO:
-        break;
+  /*private void handleDriving(double speed, double rotation){
+    switch(getDriveMode()){
       case LOCAL_FORWARD:
         speed = -speed;
         break;
       case LOCAL_REVERSED:
         speed = speed;
+        break;
+      case AUTO:
+        break;
     }
-  }
+  } */
 
   @Override
   public void autonomousInit() {
@@ -204,7 +206,7 @@ public class Robot extends TimedRobot {
     double speed = - driver.getLeftY();
     double rotation = driver.getRightX();
 
-    handleDriving();
+    //handleDriving(speed, rotation);
 
     double left = speed + rotation;
     double right = speed - rotation;
@@ -271,10 +273,10 @@ public class Robot extends TimedRobot {
     }
 
     if (driver.getR1ButtonPressed()){
-      if (getDriveMode == LOCAL_FORWARD){
-        setDriveMode(LOCAL_REVERSED);
-      } else if (getDriveMode == LOCAL_REVERSED){
-        setDriveMode(LOCAL_FORWARD);
+      if (mode == DriveMode.LOCAL_FORWARD){
+        setDriveMode(DriveMode.LOCAL_REVERSED);
+      } else if (mode == DriveMode.LOCAL_REVERSED){
+        setDriveMode(DriveMode.LOCAL_FORWARD);
       }
     }
 
