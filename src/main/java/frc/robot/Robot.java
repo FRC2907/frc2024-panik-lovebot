@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -80,6 +81,7 @@ public class Robot extends TimedRobot {
   private AddressableLED m_led;
   private AddressableLEDBuffer m_ledBuffer;
   private int m_rainbowFirstPixelHue;
+  private PWMSparkMax led;
 
   private boolean pneumaticOn;
   private boolean intakeOn;
@@ -117,6 +119,8 @@ public class Robot extends TimedRobot {
     m_led.setLength(m_ledBuffer.getLength());
     m_led.setData(m_ledBuffer);
     m_led.start();
+
+    led = new PWMSparkMax(0);
 
     array = new int[m_ledBuffer.getLength()];
     
@@ -226,6 +230,7 @@ public class Robot extends TimedRobot {
         intake.set(ControlMode.PercentOutput, 0.75);
         hopper_left.set(ControlMode.PercentOutput, 0.75);
         intakeOn = true;
+        led.set(0.77);
       } else {
         pneumaticOn = false;
         intake.set(ControlMode.PercentOutput, 0);
@@ -252,6 +257,7 @@ public class Robot extends TimedRobot {
       if (intakeClimbOn == false){
         intake_climb.set(ControlMode.PercentOutput, 0.75);
         intakeClimbOn = true;
+        led.set(0.61);
       } else {
         intake_climb.set(ControlMode.PercentOutput, 0);
         intakeClimbOn = false;
@@ -260,17 +266,18 @@ public class Robot extends TimedRobot {
 
     if (driver.getR2Button()){
       right_shooter.set(1);
+      led.set(0.77);
     } else {
       right_shooter.set(0);
     }
 
-    if (driver.getPOV() == 0){
+    /*if (driver.getPOV() == 0){
       shooter_extension.set(ControlMode.PercentOutput, 0.5);
     } else if (driver.getPOV() == 180){
       shooter_extension.set(ControlMode.PercentOutput, -0.5);
     } else {
       shooter_extension.set(ControlMode.PercentOutput, 0);
-    }
+    }*/ //not attached to current robot
 
     if (driver.getR1ButtonPressed()){
       if (mode == DriveMode.LOCAL_FORWARD){
@@ -281,6 +288,8 @@ public class Robot extends TimedRobot {
     }
 
     rainbow();
-    lionPride(); //choose which one
+    lionPride(); //choose which one if have addressable leds
+
+    led.set(0.53);
   }
 }
