@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -96,8 +97,8 @@ public class Robot extends TimedRobot {
     right_follower_1.setControl(new Follower(i_right_leader, false));
     right_follower_2.setControl(new Follower(i_right_leader, false));
 
-    left_leader.setInverted(false);
-    right_leader.setInverted(true);
+    left_leader.setInverted(true);
+    right_leader.setInverted(false);
 
     left_shooter.setControl(new Follower(i_right_shooter, true));
 
@@ -131,6 +132,7 @@ public class Robot extends TimedRobot {
     pneumaticOn = false;
     intakeOn = false;
     intakeClimbOn = false;
+    mode = DriveMode.LOCAL_FORWARD;
   }
 
   private void pneumaticHandler(boolean position){
@@ -176,18 +178,31 @@ public class Robot extends TimedRobot {
     return mode;
   }
 
-  /*private void handleDriving(double speed, double rotation){
-    switch(getDriveMode()){
+  private void handleDriving(){
+    double speed = driver.getLeftY();
+    double rotation = -driver.getRightX();
+
+    switch(mode){
+      case AUTO:
       case LOCAL_FORWARD:
-        speed = -speed;
         break;
       case LOCAL_REVERSED:
-        speed = speed;
-        break;
-      case AUTO:
+        speed = -speed;
         break;
     }
-  } */
+
+    double left = speed + rotation;
+    double right = speed - rotation;
+
+    if (left > 1.0 || left < -1.0) { right = right / Math.abs(left); left = left / Math.abs(left); }
+    if (right > 1.0 || right < -1.0) { left = left / Math.abs(right); right = right / Math.abs(right); }
+
+    left = left / 4;
+    right = right / 4;
+
+    left_leader.set(left);
+    right_leader.set(right);
+  } 
 
   @Override
   public void autonomousInit() {
@@ -207,10 +222,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    double speed = - driver.getLeftY();
+    /*double speed = driver.getLeftY();
     double rotation = driver.getRightX();
 
-    //handleDriving(speed, rotation);
+    handleDriving();
 
     double left = speed + rotation;
     double right = speed - rotation;
@@ -218,11 +233,13 @@ public class Robot extends TimedRobot {
     if (left > 1.0 || left < -1.0) { right = right / Math.abs(left); left = left / Math.abs(left); }
     if (right > 1.0 || right < -1.0) { left = left / Math.abs(right); right = right / Math.abs(right); }
 
-    left = left / 2;
-    right = right / 2;
+    left = left / 4;
+    right = right / 4;
 
     left_leader.set(left);
-    right_leader.set(right);
+    right_leader.set(right);*/
+
+    handleDriving();
 
     if (operator.getCrossButtonPressed()){
       if (pneumaticOn == false){
@@ -291,5 +308,11 @@ public class Robot extends TimedRobot {
     lionPride(); //choose which one if have addressable leds
 
     led.set(0.53);
+    
+    SmartDashboard.putBoolean("mode3", mode == DriveMode.LOCAL_REVERSED);
+  }
+
+  public void submitTelemetry(){ 
+    SmartDashboard.putString("mode2", "something");
   }
 }
