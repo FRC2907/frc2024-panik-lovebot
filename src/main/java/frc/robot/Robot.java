@@ -83,6 +83,7 @@ public class Robot extends TimedRobot {
   private AddressableLEDBuffer m_ledBuffer;
   private int m_rainbowFirstPixelHue;
   private PWMSparkMax led;
+  private boolean ledRunning;
 
   private boolean pneumaticOn;
   private boolean intakeOn;
@@ -122,6 +123,7 @@ public class Robot extends TimedRobot {
     m_led.start();
 
     led = new PWMSparkMax(0);
+    ledRunning = false;
 
     array = new int[m_ledBuffer.getLength()];
     
@@ -307,12 +309,8 @@ public class Robot extends TimedRobot {
     rainbow();
     lionPride(); //choose which one if have addressable leds
 
-    led.set(0.53);
-    
-    SmartDashboard.putBoolean("mode3", mode == DriveMode.LOCAL_REVERSED);
-  }
-
-  public void submitTelemetry(){ 
-    SmartDashboard.putString("mode2", "something");
+    if (ledRunning == true){} else {
+      led.set(0.53);
+    }    
   }
 }
