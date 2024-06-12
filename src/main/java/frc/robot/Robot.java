@@ -224,23 +224,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    /*double speed = driver.getLeftY();
-    double rotation = driver.getRightX();
-
-    handleDriving();
-
-    double left = speed + rotation;
-    double right = speed - rotation;
-
-    if (left > 1.0 || left < -1.0) { right = right / Math.abs(left); left = left / Math.abs(left); }
-    if (right > 1.0 || right < -1.0) { left = left / Math.abs(right); right = right / Math.abs(right); }
-
-    left = left / 4;
-    right = right / 4;
-
-    left_leader.set(left);
-    right_leader.set(right);*/
-
     handleDriving();
 
     if (operator.getCrossButtonPressed()){
@@ -249,54 +232,40 @@ public class Robot extends TimedRobot {
         intake.set(ControlMode.PercentOutput, 0.75);
         hopper_left.set(ControlMode.PercentOutput, 0.75);
         intakeOn = true;
+        ledRunning = true;
         led.set(0.77);
       } else {
         pneumaticOn = false;
         intake.set(ControlMode.PercentOutput, 0);
         hopper_left.set(ControlMode.PercentOutput, 0);
         intakeOn = false;
+        ledRunning = false;
       }
     }
 
     pneumaticHandler(pneumaticOn);
 
-    /*if (driver.getCircleButtonPressed()){
-      if (intakeOn == false){
-        intake.set(ControlMode.PercentOutput, 0.75);
-        hopper_left.set(ControlMode.PercentOutput, 0.75);
-        intakeOn = true;
-      } else {
-        intake.set(ControlMode.PercentOutput, 0);
-        hopper_left.set(ControlMode.PercentOutput, 0);
-        intakeOn = false;
-      } 
-    } */
-
     if (driver.getSquareButtonPressed()){
       if (intakeClimbOn == false){
         intake_climb.set(ControlMode.PercentOutput, 0.75);
         intakeClimbOn = true;
+        ledRunning = true;
         led.set(0.61);
       } else {
         intake_climb.set(ControlMode.PercentOutput, 0);
         intakeClimbOn = false;
+        ledRunning = false;
       }
     }
 
     if (driver.getR2Button()){
       right_shooter.set(1);
+      ledRunning = true;
       led.set(0.77);
     } else {
       right_shooter.set(0);
+      ledRunning = false;
     }
-
-    /*if (driver.getPOV() == 0){
-      shooter_extension.set(ControlMode.PercentOutput, 0.5);
-    } else if (driver.getPOV() == 180){
-      shooter_extension.set(ControlMode.PercentOutput, -0.5);
-    } else {
-      shooter_extension.set(ControlMode.PercentOutput, 0);
-    }*/ //not attached to current robot
 
     if (driver.getR1ButtonPressed()){
       if (mode == DriveMode.LOCAL_FORWARD){
