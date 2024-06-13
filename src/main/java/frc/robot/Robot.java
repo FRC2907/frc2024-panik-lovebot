@@ -275,7 +275,7 @@ public class Robot extends TimedRobot {
       }
     }
 
-    rainbow();
+    //rainbow();
     lionPride(); //choose which one if have addressable leds
 
     if (ledRunning == true){} else {
