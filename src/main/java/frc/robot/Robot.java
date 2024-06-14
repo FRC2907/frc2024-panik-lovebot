@@ -233,7 +233,7 @@ public class Robot extends TimedRobot {
         hopper_left.set(ControlMode.PercentOutput, 0.75);
         intakeOn = true;
         ledRunning = true;
-        led.set(0.77);
+        led.set(0.65);
       } else {
         pneumaticOn = false;
         intake.set(ControlMode.PercentOutput, 0);
@@ -276,7 +276,7 @@ public class Robot extends TimedRobot {
     }
 
     //rainbow();
-    lionPride(); //choose which one if have addressable leds
+    //lionPride(); //choose which one if have addressable leds
 
     if (ledRunning == true){} else {
       led.set(0.53);
