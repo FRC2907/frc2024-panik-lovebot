@@ -11,7 +11,14 @@ public class LEDTest extends TimedRobot {
     @Override
     public void robotInit(){
         led = new PWMSparkMax(0);
+        driver = new PS4Controller(0);
     }
+    
+    @Override
+    public void autonomousInit(){}
+
+    @Override
+    public void autonomousPeriodic(){}
 
     @Override
     public void teleopPeriodic(){

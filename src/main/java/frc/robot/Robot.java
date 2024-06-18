@@ -76,10 +76,9 @@ public class Robot extends TimedRobot {
   private static Solenoid rightSolenoid_extend;
   private static Solenoid rightSolenoid_retract;
   private Compressor compressor;
+  //private boolean compressorIsRunning;
 
-  private boolean compressorIsRunning;
-
-  private AddressableLED m_led;
+  //private AddressableLED m_led;
   private AddressableLEDBuffer m_ledBuffer;
   private int m_rainbowFirstPixelHue;
   private PWMSparkMax led;
@@ -116,11 +115,11 @@ public class Robot extends TimedRobot {
     rightSolenoid_retract = new Solenoid(PneumaticsModuleType.CTREPCM, 2); 
     compressor = new Compressor(PneumaticsModuleType.CTREPCM); 
 
-    m_led = new AddressableLED(9); //TODO placeholder port
+    /*m_led = new AddressableLED(9); //TODO placeholder port
     m_ledBuffer = new AddressableLEDBuffer(60); //TODO find amount of leds
     m_led.setLength(m_ledBuffer.getLength());
     m_led.setData(m_ledBuffer);
-    m_led.start();
+    m_led.start(); */
 
     led = new PWMSparkMax(0);
     ledRunning = false;
@@ -213,13 +212,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    if (autoTimer.get() < 8) {// seconds
+    //if (autoTimer.get() < 8) {// seconds
     //left_leader.set(0.1);
     //right_leader.set(0.1);
     //} else {
     left_leader.set(0.0);
     right_leader.set(0.0);
-    }
+  //}
   }
 
   @Override
