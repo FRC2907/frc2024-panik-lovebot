@@ -1,7 +1,12 @@
 
-package frc.robot;
+package frc.robot.util;
 
-public class util {
+import com.ctre.phoenix.motorcontrol.FollowerType;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.hardware.TalonFX;
+
+public class Util {
   //198 instructions
   public static int[] fromHSV_slow(short h, short s, short v) {
     final int region = (h / 30) % 6;
@@ -52,5 +57,35 @@ public class util {
           return new int[]{v, m, v - X};
       }
   }
+
+  public static TalonFX createTalonFXGroup(int[] ids, boolean invert) {
+		if (ids.length == 0) {
+			System.err.println("[EE] Attempted to create empty group of CANSparkMax");
+			new Exception().printStackTrace();
+		}
+		TalonFX[] mcs = new TalonFX[ids.length];
+		for (int i = 0; i < ids.length; i++) {
+			mcs[i] = new TalonFX(ids[i]);
+			if (i > 0)
+				mcs[i].setControl(new Follower(ids[0], false));
+		}
+		mcs[0].setInverted(invert);
+		return mcs[0];
+	}
+
+  public static TalonSRX createTalonSRXGroup(int[] ids, boolean invert) {
+		if (ids.length == 0) {
+			System.err.println("[EE] Attempted to create empty group of CANSparkMax");
+			new Exception().printStackTrace();
+		}
+		TalonSRX[] mcs = new TalonSRX[ids.length];
+		for (int i = 0; i < ids.length; i++) {
+			mcs[i] = new TalonSRX(ids[i]);
+			if (i > 0)
+				mcs[i].follow(mcs[0], FollowerType.PercentOutput);
+		}
+		mcs[0].setInverted(invert);
+		return mcs[0];
+	}
 
 }

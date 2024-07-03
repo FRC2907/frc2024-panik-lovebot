@@ -2,12 +2,33 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-public class Feed {
+public class Feed implements ISubsystem{
     int i_feed = 10;
 
-    TalonSRX feed = new TalonSRX(i_feed);
+    TalonSRX feed = new TalonSRX(frc.robot.constants.Ports.talon.feed.MOTOR);
 
-    feed.setInverted(true);
+    private boolean feedOn;
 
-    feedOn = false;
+    private Feed(TalonSRX feed){
+        feed.setInverted(true);
+        feedOn = false;
+    }
+
+    private static Feed instance;
+
+    public static Feed getInstance(){
+        if (instance == null){
+
+        }
+        return instance;
+    }
+
+    @Override
+    public void onLoop(){}
+
+    @Override
+    public void submitTelemetry(){}
+
+    @Override
+    public void receiveOptions(){}
 }
