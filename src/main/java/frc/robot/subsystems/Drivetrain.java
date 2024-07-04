@@ -23,7 +23,7 @@ public class Drivetrain extends DifferentialDrive implements ISubsystem{
     public TalonFX leftMotor;
     public TalonFX rightMotor;
 
-    public DriveMode mode;
+    public static DriveMode mode;
 
     private Drivetrain(TalonFX left, TalonFX right){
       super(left, right);
@@ -38,8 +38,8 @@ public class Drivetrain extends DifferentialDrive implements ISubsystem{
     public static Drivetrain getInstance(){
       TalonFX left, right;
       if (instance == null){
-        left = Util.createTalonFXGroup(frc.robot.constants.Ports.talon.drivetrain.LEFTS, true);
-        right = Util.createTalonFXGroup(frc.robot.constants.Ports.talon.drivetrain.RIGHTS, false);
+        left = Util.createTalonFXGroup(frc.robot.constants.Ports.talon.drivetrain.LEFTS, true, false);
+        right = Util.createTalonFXGroup(frc.robot.constants.Ports.talon.drivetrain.RIGHTS, false, false);
         instance = new Drivetrain(left, right);
       }
       return instance;
@@ -49,12 +49,20 @@ public class Drivetrain extends DifferentialDrive implements ISubsystem{
         AUTO, LOCAL_FORWARD, LOCAL_REVERSED
     }
     
-    public void setDriveMode(DriveMode newMode){
+    public static void setDriveMode(DriveMode newMode){
         mode = newMode;
     }
   
     public DriveMode getDriveMode(){
         return mode;
+    }
+
+    public void reverse(){
+      if (mode == DriveMode.LOCAL_FORWARD){
+        setDriveMode(DriveMode.LOCAL_REVERSED);
+      } else if (mode == DriveMode.LOCAL_REVERSED){
+        setDriveMode(DriveMode.LOCAL_FORWARD);
+      }
     }
     
     /*private void handleDriving(){

@@ -7,25 +7,25 @@ import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.constants.Ports;
 
 public class Intake implements ISubsystem{
-    int i_intake = 13;
+    //int i_intake = 13;
 
     TalonSRX intake = new TalonSRX(Ports.talon.intake.MOTOR);
 
-    private static Solenoid leftSolenoid_extend;
-    private static Solenoid leftSolenoid_retract;
-    private static Solenoid rightSolenoid_extend;
-    private static Solenoid rightSolenoid_retract;
+    private static Solenoid leftExtend;
+    private static Solenoid leftRetract;
+    private static Solenoid rightExtend;
+    private static Solenoid rightRetract;
 
-    private boolean pneumaticOn;
-    private boolean intakeOn;
+    public boolean pneumaticOn;
+    public boolean intakeOn;
 
     private Intake(Solenoid pneumatics, TalonSRX intake){
       intake.setInverted(true);
 
-      leftSolenoid_extend = new Solenoid(PneumaticsModuleType.CTREPCM, 1); 
-      leftSolenoid_retract = new Solenoid(PneumaticsModuleType.CTREPCM, 0); 
-      rightSolenoid_extend = new Solenoid(PneumaticsModuleType.CTREPCM, 3); 
-      rightSolenoid_retract = new Solenoid(PneumaticsModuleType.CTREPCM, 2); 
+      leftExtend = new Solenoid(PneumaticsModuleType.CTREPCM, frc.robot.constants.Ports.CTREPCM.SOLENOIDS.L_EXTEND); 
+      leftRetract = new Solenoid(PneumaticsModuleType.CTREPCM, frc.robot.constants.Ports.CTREPCM.SOLENOIDS.L_RETRACT); 
+      rightExtend = new Solenoid(PneumaticsModuleType.CTREPCM, frc.robot.constants.Ports.CTREPCM.SOLENOIDS.R_EXTEND); 
+      rightRetract = new Solenoid(PneumaticsModuleType.CTREPCM, frc.robot.constants.Ports.CTREPCM.SOLENOIDS.R_RETRACT); 
       pneumaticOn = false;
       intakeOn = false;
     }
@@ -41,11 +41,11 @@ public class Intake implements ISubsystem{
 
 
     public void pneumaticHandler(boolean position){
-        leftSolenoid_extend.set(position);
-        rightSolenoid_extend.set(position);
+        leftExtend.set(position);
+        rightExtend.set(position);
     
-        leftSolenoid_retract.set(!position);
-        rightSolenoid_retract.set(!position);
+        leftRetract.set(!position);
+        rightRetract.set(!position);
     }
 
     @Override

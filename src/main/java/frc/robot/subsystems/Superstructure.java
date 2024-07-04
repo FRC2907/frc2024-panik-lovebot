@@ -1,9 +1,9 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.PS5Controller;
-import edu.wpi.first.wpilibj.RobotState;
 
 
 
@@ -74,13 +74,57 @@ public class Superstructure implements ISubsystem{
         rightMotor.set(right);
       } 
 
-    private void handleInputs(){ //change to reference states
-      
+    private void handleInputs(){ //TODO change to reference states
+      if (operator.getCrossButtonPressed()){
+      if (intake.pneumaticOn == false){
+        intake.pneumaticOn = true;
+        intake.intake.set(ControlMode.PercentOutput, 0.75); //TODO change intake motor to different name
+        hopper.motor.set(ControlMode.PercentOutput, 0.75);
+        intake.intakeOn = true;
+        led.ledRunning = true;
+        led.orange();
+      } else {
+        intake.pneumaticOn = false;
+        intake.intake.set(ControlMode.PercentOutput, 0);
+        hopper.motor.set(ControlMode.PercentOutput, 0);
+        intake.intakeOn = false;
+        led.ledRunning = false;
+      }
     }
+
+    intake.pneumaticHandler(intake.pneumaticOn);
+
+    if (driver.getSquareButtonPressed()){
+      if (feed.feedOn == false){
+        feed.motor.set(ControlMode.PercentOutput, 0.75);
+        feed.feedOn = true;
+        led.ledRunning = true;
+        led.red();
+      } else {
+        feed.motor.set(ControlMode.PercentOutput, 0);
+        feed.feedOn = false;
+        led.ledRunning = false;
+      }
+    }
+
+    if (driver.getR2Button()){
+      shooter.motor.set(1);
+      led.ledRunning = true;
+      led.green();
+    } else {
+      shooter.motor.set(0);
+      led.ledRunning = false;
+    }
+
+    if (driver.getR1ButtonPressed()){
+      drivetrain.reverse();
+    }
+  }
 
     @Override
     public void onLoop(){
       handleDriving(drivetrain.leftMotor, drivetrain.rightMotor);
+      handleInputs();
 
       for (ISubsystem s : this.subsystems){
         s.onLoop();

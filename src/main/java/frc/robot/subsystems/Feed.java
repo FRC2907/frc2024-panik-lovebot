@@ -3,14 +3,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class Feed implements ISubsystem{
-    int i_feed = 10;
+    //int i_feed = 10;
 
-    TalonSRX feed = new TalonSRX(frc.robot.constants.Ports.talon.feed.MOTOR);
+    public TalonSRX motor;
 
-    private boolean feedOn;
+    public boolean feedOn;
 
-    private Feed(TalonSRX feed){
-        feed.setInverted(true);
+    private Feed(TalonSRX _feed){
+        motor = _feed;
         feedOn = false;
     }
 
@@ -18,7 +18,9 @@ public class Feed implements ISubsystem{
 
     public static Feed getInstance(){
         if (instance == null){
-
+            TalonSRX motor = new TalonSRX(frc.robot.constants.Ports.talon.feed.MOTOR);
+            motor.setInverted(true);
+            instance = new Feed(motor);
         }
         return instance;
     }

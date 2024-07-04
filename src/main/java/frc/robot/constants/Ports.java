@@ -12,8 +12,7 @@ public class Ports {
         }
 
         public static class hopper {
-            public static final int LEFT = 11;
-            public static final int RIGHT = 12;
+            public static final int[] MOTORS = { 11, 12 };
         }
 
         public static class feed {
@@ -23,6 +22,8 @@ public class Ports {
         public static class shooter {
             public static final int LEFT = 7;
             public static final int RIGHT = 8;
+
+            public static final int[] MOTORS = { 8, 7 };
         }
     }
 
@@ -32,7 +33,13 @@ public class Ports {
     }
 
     public static class CTREPCM {
-    
+        public static class SOLENOIDS{
+            public static final int L_EXTEND = 1;
+            public static final int L_RETRACT = 0;
+
+            public static final int R_EXTEND = 3;
+            public static final int R_RETRACT = 2;
+        }
     }
 
     public static class HID {

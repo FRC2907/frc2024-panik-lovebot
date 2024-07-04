@@ -8,13 +8,12 @@ public class LED implements ISubsystem{
     private AddressableLEDBuffer m_ledBuffer;
     private int m_rainbowFirstPixelHue;
     private PWMSparkMax led;
-    private boolean ledRunning;
+    public boolean ledRunning;
 
     int[] array;
 
     @SuppressWarnings({"resource"})
     private LED(PWMSparkMax led){
-      led = new PWMSparkMax(frc.robot.constants.Ports.PWM.LED);
       ledRunning = false;
 
       array = new int[m_ledBuffer.getLength()];
@@ -28,7 +27,8 @@ public class LED implements ISubsystem{
 
     public static LED getInstance(){
       if (instance == null){
-
+        PWMSparkMax led = new PWMSparkMax(frc.robot.constants.Ports.PWM.LED);
+        instance = new LED(led);
       }
       return instance;
     }

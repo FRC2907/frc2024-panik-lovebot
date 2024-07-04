@@ -6,6 +6,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
+
 public class Util {
   //198 instructions
   public static int[] fromHSV_slow(short h, short s, short v) {
@@ -58,24 +61,24 @@ public class Util {
       }
   }
 
-  public static TalonFX createTalonFXGroup(int[] ids, boolean invert) {
+  public static TalonFX createTalonFXGroup(int[] ids, boolean invWhole, boolean invIndividual) {
 		if (ids.length == 0) {
-			System.err.println("[EE] Attempted to create empty group of CANSparkMax");
+			System.err.println("[EE] Attempted to create empty group of TalonFX");
 			new Exception().printStackTrace();
 		}
 		TalonFX[] mcs = new TalonFX[ids.length];
 		for (int i = 0; i < ids.length; i++) {
 			mcs[i] = new TalonFX(ids[i]);
 			if (i > 0)
-				mcs[i].setControl(new Follower(ids[0], false));
+				mcs[i].setControl(new Follower(ids[0], invIndividual));
 		}
-		mcs[0].setInverted(invert);
+		mcs[0].setInverted(invWhole);
 		return mcs[0];
 	}
 
-  public static TalonSRX createTalonSRXGroup(int[] ids, boolean invert) {
+  public static TalonSRX createTalonSRXGroup(int[] ids, boolean invWhole, boolean invIndividual) {
 		if (ids.length == 0) {
-			System.err.println("[EE] Attempted to create empty group of CANSparkMax");
+			System.err.println("[EE] Attempted to create empty group of TalonSRX");
 			new Exception().printStackTrace();
 		}
 		TalonSRX[] mcs = new TalonSRX[ids.length];
@@ -83,8 +86,9 @@ public class Util {
 			mcs[i] = new TalonSRX(ids[i]);
 			if (i > 0)
 				mcs[i].follow(mcs[0], FollowerType.PercentOutput);
+        mcs[i].setInverted(invIndividual);
 		}
-		mcs[0].setInverted(invert);
+		mcs[0].setInverted(invWhole);
 		return mcs[0];
 	}
 
