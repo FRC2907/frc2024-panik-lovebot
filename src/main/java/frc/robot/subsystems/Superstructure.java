@@ -46,6 +46,15 @@ public class Superstructure implements ISubsystem{
         this.subsystems = new ISubsystem[]{drivetrain, feed, hopper, intake, led, shooter};
     }
 
+    private static Superstructure instance;
+
+    public static Superstructure getInstance(){
+      if (instance == null){
+        instance = new Superstructure(RobotState.NEUTRAL, true);
+      }
+      return instance;
+    }
+
     private void handleDriving(TalonFX leftMotor, TalonFX rightMotor){
         double left;
         double right;
