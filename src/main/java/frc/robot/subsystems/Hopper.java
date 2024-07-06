@@ -21,6 +21,7 @@ public class Hopper implements ISubsystem{
     public static Hopper getInstance(){
         if (instance == null){
             TalonSRX motor = Util.createTalonSRXGroup(frc.robot.constants.Ports.talon.hopper.MOTORS, false, true);
+            instance = new Hopper(motor);
         }
         return instance;
     }

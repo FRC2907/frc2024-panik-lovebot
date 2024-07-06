@@ -12,7 +12,6 @@ public class LED implements ISubsystem{
 
     int[] array;
 
-    @SuppressWarnings({"resource"})
     private LED(PWMSparkMax led){
       ledRunning = false;
 

@@ -78,14 +78,14 @@ public class Superstructure implements ISubsystem{
       if (operator.getCrossButtonPressed()){
       if (intake.pneumaticOn == false){
         intake.pneumaticOn = true;
-        intake.intake.set(ControlMode.PercentOutput, 0.75); //TODO change intake motor to different name
+        intake.motor.set(ControlMode.PercentOutput, 0.75); //TODO change intake motor to different name
         hopper.motor.set(ControlMode.PercentOutput, 0.75);
         intake.intakeOn = true;
         led.ledRunning = true;
         led.orange();
       } else {
         intake.pneumaticOn = false;
-        intake.intake.set(ControlMode.PercentOutput, 0);
+        intake.motor.set(ControlMode.PercentOutput, 0);
         hopper.motor.set(ControlMode.PercentOutput, 0);
         intake.intakeOn = false;
         led.ledRunning = false;

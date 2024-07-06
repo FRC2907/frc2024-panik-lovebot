@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import frc.robot.util.Util;
@@ -19,13 +18,12 @@ public class Shooter implements ISubsystem{
     @SuppressWarnings({"resource"})
     public static Shooter getInstance(){
         if (instance == null){
-            TalonFX left, right;
-            TalonFX leftShooter = new TalonFX(frc.robot.constants.Ports.talon.shooter.LEFT);
+            /*TalonFX leftShooter = new TalonFX(frc.robot.constants.Ports.talon.shooter.LEFT);
             TalonFX rightShooter = new TalonFX(frc.robot.constants.Ports.talon.shooter.RIGHT);
-            leftShooter.setControl(new Follower(8, true));
-            instance = new Shooter(rightShooter);
-
+            leftShooter.setControl(new Follower(frc.robot.constants.Ports.talon.shooter.RIGHT, true)); */
             TalonFX motor = Util.createTalonFXGroup(frc.robot.constants.Ports.talon.shooter.MOTORS, false, true);
+
+            instance = new Shooter(motor);
         }
 
         return instance;
