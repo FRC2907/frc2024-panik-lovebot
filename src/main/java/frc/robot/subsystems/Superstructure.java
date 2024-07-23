@@ -12,7 +12,7 @@ public class Superstructure implements ISubsystem{
     private Feed feed;
     private Hopper hopper;
     private Intake intake;
-    private LED led;
+    private Led led;
     private Shooter shooter;
     private ISubsystem[] subsystems;
     
@@ -41,7 +41,7 @@ public class Superstructure implements ISubsystem{
         this.feed = Feed.getInstance();
         this.hopper = Hopper.getInstance();
         this.intake = Intake.getInstance();
-        this.led = LED.getInstance();
+        this.led = Led.getInstance();
         this.shooter = Shooter.getInstance();
         this.subsystems = new ISubsystem[]{drivetrain, feed, hopper, intake, led, shooter};
     }

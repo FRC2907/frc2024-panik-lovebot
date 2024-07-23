@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 
-public class LED implements ISubsystem{
+public class Led implements ISubsystem{
 
     private AddressableLEDBuffer m_ledBuffer;
     private int m_rainbowFirstPixelHue;
@@ -12,7 +12,7 @@ public class LED implements ISubsystem{
 
     int[] array;
 
-    private LED(PWMSparkMax led){
+    private Led(PWMSparkMax led){
       ledRunning = false;
 
       array = new int[m_ledBuffer.getLength()];
@@ -22,12 +22,12 @@ public class LED implements ISubsystem{
       }
     }
 
-    private static LED instance;
+    private static Led instance;
 
-    public static LED getInstance(){
+    public static Led getInstance(){
       if (instance == null){
         PWMSparkMax led = new PWMSparkMax(frc.robot.constants.Ports.PWM.LED);
-        instance = new LED(led);
+        instance = new Led(led);
       }
       return instance;
     }
