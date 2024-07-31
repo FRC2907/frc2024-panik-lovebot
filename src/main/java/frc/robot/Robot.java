@@ -121,14 +121,14 @@ public class Robot extends TimedRobot {
     m_led.setData(m_ledBuffer);
     m_led.start(); */
 
-    led = new PWMSparkMax(0);
+    //led = new PWMSparkMax(0);
     ledRunning = false;
 
-    array = new int[m_ledBuffer.getLength()];
+    //array = new int[m_ledBuffer.getLength()];
     
-    for (int i = 0; i < m_ledBuffer.getLength(); i++){
+    /*for (int i = 0; i < m_ledBuffer.getLength(); i++){
       array[i] = i;
-    }
+    } */
 
     pneumaticOn = false;
     intakeOn = false;
@@ -232,7 +232,7 @@ public class Robot extends TimedRobot {
         hopper_left.set(ControlMode.PercentOutput, 0.75);
         intakeOn = true;
         ledRunning = true;
-        led.set(0.65);
+        //led.set(0.65);
       } else {
         pneumaticOn = false;
         intake.set(ControlMode.PercentOutput, 0);
@@ -249,7 +249,7 @@ public class Robot extends TimedRobot {
         intake_climb.set(ControlMode.PercentOutput, 0.75);
         intakeClimbOn = true;
         ledRunning = true;
-        led.set(0.61);
+        //led.set(0.61);
       } else {
         intake_climb.set(ControlMode.PercentOutput, 0);
         intakeClimbOn = false;
@@ -260,7 +260,7 @@ public class Robot extends TimedRobot {
     if (driver.getR2Button()){
       right_shooter.set(1);
       ledRunning = true;
-      led.set(0.77);
+      //led.set(0.77);
     } else {
       right_shooter.set(0);
       ledRunning = false;
@@ -277,8 +277,8 @@ public class Robot extends TimedRobot {
     //rainbow();
     //lionPride(); //choose which one if have addressable leds
 
-    if (ledRunning == true){} else {
+    /*if (ledRunning == true){} else {
       led.set(0.53);
-    }    
+    }    */ 
   }
 }
